@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Paradox | Живое меню</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+background: #0a0a0a;
+color: #fff;
+min-height: 100vh;
+padding-bottom: 80px;
+}
+header {
+padding: 24px 20px 16px;
+text-align: center;
+border-bottom: 1px solid #222;
+position: relative;
+}
+header h1 {
+font-size: 24px;
+font-weight: 700;
+letter-spacing: 1px;
+}
+header p {
+font-size: 13px;
+color: #888;
+margin-top: 6px;
+text-transform: uppercase;
+letter-spacing: 2px;
+}
+.lang-switch {
+position: absolute;
+top: 20px;
+right: 20px;
+display: flex;
+background: #1c1c1c;
+border-radius: 20px;
+padding: 3px;
+font-size: 12px;
+font-weight: 600;
+}
+.lang-switch button {
+background: none;
+border: none;
+color: #888;
+padding: 6px 12px;
+border-radius: 15px;
+cursor: pointer;
+transition: 0.3s;
+}
+.lang-switch button.active {
+background: #fff;
+color: #111;
+}
+.tabs {
+display: flex;
+gap: 8px;
+padding: 16px 20px;
+justify-content: center;
+flex-wrap: wrap;
+}
+.tab {
+padding: 10px 18px;
+border-radius: 20px;
+background: #1c1c1c;
+color: #aaa;
+font-size: 14px;
+border: none;
+cursor: pointer;
+font-family: inherit;
+transition: 0.3s;
+}
+.tab.active {
+background: #fff;
+color: #111;
+font-weight: 600;
+}
+.section {
+display: none;
+padding: 8px 20px 20px;
+flex-direction: column;
+align-items: center;
+gap: 24px;
+}
+.section.active {
+display: flex;
+}
+.card {
+background: #151515;
+border-radius: 16px;
+overflow: hidden;
+width: 100%;
+max-width: 340px;
+position: relative;
+}
+.badge {
+position: absolute;
+top: 12px;
+left: 12px;
+background: #ff4500;
+color: #fff;
+font-size: 11px;
+font-weight: 700;
+padding: 4px 8px;
+border-radius: 6px;
+text-transform: uppercase;
+letter-spacing: 0.5px;
+z-index: 2;
+}
+.card video {
+width: 100%;
+display: block;
+background: #000;
+}
+.card .info {
+padding: 16px 18px 20px;
+text-align: center;
+}
+.card h2 {
+font-size: 18px;
+font-weight: 600;
+margin-bottom: 6px;
+}
+.card .desc {
+font-size: 13px;
+color: #999;
+line-height: 1.5;
+margin-bottom: 12px;
+}
+.kbju {
+font-size: 11px;
+color: #666;
+margin-bottom: 12px;
+letter-spacing: 0.5px;
+}
+.card .price {
+font-size: 22px;
+font-weight: 700;
+color: #fff;
+}
+.bottom-bar {
+position: fixed;
+bottom: 0;
+left: 0;
+width: 100%;
+background: #111;
+border-top: 1px solid #222;
+display: flex;
+padding: 12px;
+z-index: 10;
+}
+.btn-call {
+width: 100%;
+padding: 16px;
+border-radius: 12px;
+text-align: center;
+font-size: 16px;
+font-weight: 700;
+text-decoration: none;
+background: #fff;
+color: #111;
+transition: 0.2s;
+border: none;
+cursor: pointer;
+font-family: inherit;
+}
+.btn-call:active {
+transform: scale(0.98);
+background: #ccc;
+}
+.modal-overlay {
+display: none;
+position: fixed;
+top: 0; left: 0; width: 100%; height: 100%;
+background: rgba(0,0,0,0.8);
+z-index: 100;
+justify-content: center;
+align-items: center;
+}
+.modal-content {
+background: #1c1c1c;
+padding: 24px;
+border-radius: 16px;
+width: 90%;
+max-width: 340px;
+text-align: center;
+position: relative;
+}
+.modal-close {
+position: absolute;
+top: 10px; right: 15px;
+background: none; border: none;
+color: #fff; font-size: 20px; cursor: pointer;
+}
+.modal-btn {
+display: block;
+background: #fff;
+color: #111;
+text-decoration: none;
+padding: 14px;
+border-radius: 12px;
+font-weight: 700;
+margin-top: 16px;
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="lang-switch">
+<button class="active" onclick="setLang('ru', this)">RU</button>
+<button onclick="setLang('en', this)">EN</button>
+</div>
+<h1>PARADOX</h1>
+<p id="subtitle" data-ru="Живое меню" data-en="Live Menu">Живое меню</p>
+</header>
+
+<div class="tabs">
+<button class="tab active" onclick="showSection('salads', this)" data-ru="Салаты" data-en="Salads">Салаты</button>
+<button class="tab" onclick="showSection('hot', this)" data-ru="Горячее" data-en="Hot">Горячее</button>
+<button class="tab" onclick="showSection('drinks', this)" data-ru="Напитки" data-en="Drinks">Напитки</button>
+<button class="tab" onclick="showSection('desserts', this)" data-ru="Десерты" data-en="Desserts">Десерты</button>
+</div>
+
+<!-- САЛАТЫ -->
+<div id="salads" class="section active">
+<div class="card">
+<video src="greek.mp4" autoplay loop muted playsinline></video>
+<div class="info">
+<h2 data-ru="Греческий салат" data-en="Greek Salad">Греческий салат</h2>
+<p class="desc" data-ru="Свежие овощи, сыр фета, оливки и оливковое масло" data-en="Fresh vegetables, feta cheese, olives and olive oil">Свежие овощи, сыр фета, оливки и оливковое масло</p>
+<p class="kbju" data-ru="250 ккал · Б 6 · Ж 18 · У 15" data-en="250 kcal · P 6 · F 18 · C 15">250 ккал · Б 6 · Ж 18 · У 15</p>
+<div class="price">420 ₽</div>
+</div>
+</div>
+</div>
+
+<!-- ГОРЯЧЕЕ -->
+<div id="hot" class="section">
+<div class="card">
+<div class="badge" data-ru="Хит" data-en="Hit">Хит</div>
+<video src="steak.mp4" autoplay loop muted playsinline></video>
+<div class="info">
+<h2 data-ru="Стейк Рибай" data-en="Ribeye Steak">Стейк Рибай</h2>
+<p class="desc" data-ru="Сочный стейк с овощами гриль и ароматным дымком" data-en="Juicy steak with grilled vegetables and a smoky aroma">Сочный стейк с овощами гриль и ароматным дымком</p>
+<p class="kbju" data-ru="650 ккал · Б 45 · Ж 48 · У 12" data-en="650 kcal · P 45 · F 48 · C 12">650 ккал · Б 45 · Ж 48 · У 12</p>
+<div class="price">1290 ₽</div>
+</div>
+</div>
+<div class="card">
+<video src="burger.mp4" autoplay loop muted playsinline></video>
+<div class="info">
+<h2 data-ru="Бургер с картошкой" data-en="Burger with Fries">Бургер с картошкой</h2>
+<p class="desc" data-ru="Сочная котлета, чеддер, свежий салат и хрустящая картошка" data-en="Juicy patty, cheddar, fresh lettuce and crispy fries">Сочная котлета, чеддер, свежий салат и хрустящая картошка</p>
+<p class="kbju" data-ru="720 ккал · Б 32 · Ж 45 · У 52" data-en="720 kcal · P 32 · F 45 · C 52">720 ккал · Б 32 · Ж 45 · У 52</p>
+<div class="price">590 ₽</div>
+</div>
+</div>
+</div>
+
+<!-- НАПИТКИ -->
+<div id="drinks" class="section">
+<div class="card">
+<video src="drink.mp4" autoplay loop muted playsinline></video>
+<div class="info">
+<h2 data-ru="Апероль Шприц" data-en="Aperol Spritz">Апероль Шприц</h2>
+<p class="desc" data-ru="Освежающий коктейль с апельсином и льдом" data-en="Refreshing cocktail with orange and ice">Освежающий коктейль с апельсином и льдом</p>
+<p class="kbju" data-ru="180 ккал · Б 0 · Ж 0 · У 22" data-en="180 kcal · P 0 · F 0 · C 22">180 ккал · Б 0 · Ж 0 · У 22</p>
+<div class="price">390 ₽</div>
+</div>
+</div>
+</div>
+
+<!-- ДЕСЕРТЫ -->
+<div id="desserts" class="section">
+<div class="card">
+<div class="badge" data-ru="Хит" data-en="Hit">Хит</div>
+<video src="cheesecake.mp4" autoplay loop muted playsinline></video>
+<div class="info">
+<h2 data-ru="Чизкейк с ягодами" data-en="Berry Cheesecake">Чизкейк с ягодами</h2>
+<p class="desc" data-ru="Нежный чизкейк с малиной, голубикой и шоколадным соусом" data-en="Delicate cheesecake with raspberries, blueberries and chocolate sauce">Нежный чизкейк с малиной, голубикой и шоколадным соусом</p>
+<p class="kbju" data-ru="420 ккал · Б 7 · Ж 28 · У 35" data-en="420 kcal · P 7 · F 28 · C 35">420 ккал · Б 7 · Ж 28 · У 35</p>
+<div class="price">450 ₽</div>
+</div>
+</div>
+<div class="card">
+<video src="fondant.
+mp4" autoplay loop muted playsinline></video>
+<div class="info">
+<h2 data-ru="Шоколадный фондан" data-en="Chocolate Fondant">Шоколадный фондан</h2>
+<p class="desc" data-ru="Горячий фондан с жидким центром и ванильным мороженым" data-en="Hot fondant with a molten center and vanilla ice cream">Горячий фондан с жидким центром и ванильным мороженым</p>
+<p class="kbju" data-ru="560 ккал · Б 8 · Ж 32 · У 58" data-en="560 kcal · P 8 · F 32 · C 58">560 ккал · Б 8 · Ж 32 · У 58</p>
+<div class="price">490 ₽</div>
+</div>
+</div>
+</div>
+
+<!-- НИЖНЯЯ ПАНЕЛЬ С КОНТАКТАМИ -->
+<div class="bottom-bar">
+<button onclick="toggleContacts()" class="btn-call" id="btnCall" data-ru="Контакты ресторана" data-en="Restaurant Contacts">Контакты ресторана</button>
+</div>
+
+<!-- ВСПЛЫВАЮЩЕЕ ОКНО -->
+<div id="contactsModal" class="modal-overlay">
+<div class="modal-content">
+<button onclick="toggleContacts()" class="modal-close">✕</button>
+<h3 style="margin-bottom: 16px; font-size: 20px;">Paradox</h3>
+<p style="color: #aaa; margin-bottom: 16px; font-size: 14px;" data-ru="Мурино, ул. Примерная, д. 1<br>Ежедневно с 12:00 до 23:00" data-en="Murino, Example st., 1<br>Daily from 12:00 to 23:00">Мурино, ул. Примерная, д. 1<br>Ежедневно с 12:00 до 23:00</p>
+<a href="tel:+79990000000" class="modal-btn" data-ru="Позвонить: +7 999 000-00-00" data-en="Call: +7 999 000-00-00">Позвонить: +7 999 000-00-00</a>
+</div>
+</div>
+
+<script>
+function showSection(id, btn) {
+document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+document.getElementById(id).classList.add('active');
+btn.classList.add('active');
+}
+
+function setLang(lang, btn) {
+document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
+btn.classList.add('active');
+document.querySelectorAll('[data-ru]').forEach(el => {
+if (el.hasAttribute('data-' + lang)) {
+if (el.tagName === 'P' && el.classList.contains('modal-content')) return;
+el.textContent = el.getAttribute('data-' + lang);
+}
+});
+// Отдельно для адреса с переносом строки
+const addressP = document.querySelector('.modal-content p');
+if(addressP) {
+addressP.innerHTML = addressP.getAttribute('data-' + lang);
+}
+document.title = lang === 'en' ? 'Paradox | Live Menu' : 'Paradox | Живое меню';
+}
+
+function toggleContacts() {
+var modal = document.getElementById('contactsModal');
+if (modal.style.display === 'flex') {
+modal.style.display = 'none';
+} else {
+modal.style.display = 'flex';
+}
+}
+</script>
+
+</body>
+</html>
