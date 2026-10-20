@@ -121,9 +121,7 @@ z-index: 2;
 background: #ff0044;
 font-size: 13px;
 }
-.card video {
-object-fit: contain !important; 
-background: #000;
+.card video { width: 100%; display: block; background: #000; object-fit: cover; /* Заполняет карточку / transform: scale(0.9); / Уменьшает видео внутри карточки, чтобы было видно края тарелки */ 
 }
 .card .info {
 padding: 16px 18px 20px;
