@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Paradox | Живое меню</title>
+<!-- Подключаем библиотеку премиальных иконок -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -19,15 +21,17 @@ text-align: center;
 border-bottom: 1px solid #222;
 position: relative;
 }
-header h1 {
-font-size: 24px;
-font-weight: 700;
-letter-spacing: 1px;
+.logo-img {
+width: 90px;
+height: 90px;
+margin: 0 auto 10px;
+display: block;
+object-fit: contain;
 }
 header p {
 font-size: 13px;
 color: #888;
-margin-top: 6px;
+margin-top: 4px;
 text-transform: uppercase;
 letter-spacing: 2px;
 }
@@ -72,12 +76,15 @@ border: none;
 cursor: pointer;
 font-family: inherit;
 transition: 0.3s;
+display: flex;
+align-items: center;
+gap: 8px;
 }
 .tab.active {
 background: #fff;
 color: #111;
-font-weight: 600;
 }
+.tab i { font-size: 16px; }
 .section {
 display: none;
 padding: 8px 20px 20px;
@@ -110,6 +117,10 @@ text-transform: uppercase;
 letter-spacing: 0.5px;
 z-index: 2;
 }
+.badge.promo {
+background: #ff0044;
+font-size: 13px;
+}
 .card video {
 width: 100%;
 display: block;
@@ -124,6 +135,12 @@ font-size: 18px;
 font-weight: 600;
 margin-bottom: 6px;
 }
+.stars {
+color: #ffd700;
+font-size: 14px;
+margin-bottom: 6px;
+letter-spacing: 2px;
+}
 .card .desc {
 font-size: 13px;
 color: #999;
@@ -136,11 +153,23 @@ color: #666;
 margin-bottom: 12px;
 letter-spacing: 0.5px;
 }
+.price-row {
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 10px;
+}
+.old-price {
+text-decoration: line-through;
+color: #666;
+font-size: 16px;
+}
 .card .price {
 font-size: 22px;
 font-weight: 700;
 color: #fff;
 }
+/* Нижняя панель */
 .bottom-bar {
 position: fixed;
 bottom: 0;
@@ -150,27 +179,28 @@ background: #111;
 border-top: 1px solid #222;
 display: flex;
 padding: 12px;
+gap: 10px;
 z-index: 10;
 }
-.btn-call {
-width: 100%;
-padding: 16px;
+.btn {
+flex: 1;
+padding: 14px;
 border-radius: 12px;
 text-align: center;
-font-size: 16px;
-font-weight: 700;
+font-size: 15px;
+font-weight: 600;
 text-decoration: none;
-background: #fff;
-color: #111;
-transition: 0.2s;
-border: none;
+background: #1c1c1c;
+color: #fff;
+border: 1px solid #333;
+display: flex;
+justify-content: center;
+align-items: center;
+gap: 8px;
 cursor: pointer;
-font-family: inherit;
 }
-.btn-call:active {
-transform: scale(0.98);
-background: #ccc;
-}
+.btn i { font-size: 18px; }
+
 .modal-overlay {
 display: none;
 position: fixed;
@@ -214,19 +244,37 @@ margin-top: 16px;
 <button class="active" onclick="setLang('ru', this)">RU</button>
 <button onclick="setLang('en', this)">EN</button>
 </div>
-<h1>PARADOX</h1>
+<img src="logo.png" alt="Paradox" class="logo-img">
 <p id="subtitle" data-ru="Живое меню" data-en="Live Menu">Живое меню</p>
 </header>
 
 <div class="tabs">
-<button class="tab active" onclick="showSection('salads', this)" data-ru="Салаты" data-en="Salads">Салаты</button>
-<button class="tab" onclick="showSection('hot', this)" data-ru="Горячее" data-en="Hot">Горячее</button>
-<button class="tab" onclick="showSection('drinks', this)" data-ru="Напитки" data-en="Drinks">Напитки</button>
-<button class="tab" onclick="showSection('desserts', this)" data-ru="Десерты" data-en="Desserts">Десерты</button>
+<!-- Используем иконки FontAwesome -->
+<button class="tab active" onclick="showSection('promo', this)" data-ru="<i class='fa-solid fa-fire'></i> Акции" data-en="<i class='fa-solid fa-fire'></i> Promo"><i class="fa-solid fa-fire"></i> Акции</button>
+<button class="tab" onclick="showSection('salads', this)" data-ru="<i class='fa-solid fa-leaf'></i> Салаты" data-en="<i class='fa-solid fa-leaf'></i> Salads"><i class="fa-solid fa-leaf"></i> Салаты</button>
+<button class="tab" onclick="showSection('hot', this)" data-ru="<i class='fa-solid fa-drumstick-bite'></i> Горячее" data-en="<i class='fa-solid fa-drumstick-bite'></i> Hot"><i class="fa-solid fa-drumstick-bite"></i> Горячее</button>
+<button class="tab" onclick="showSection('drinks', this)" data-ru="<i class='fa-solid fa-martini-glass-citrus'></i> Напитки" data-en="<i class='fa-solid fa-martini-glass-citrus'></i> Drinks"><i class="fa-solid fa-martini-glass-citrus"></i> Напитки</button>
+<button class="tab" onclick="showSection('desserts', this)" data-ru="<i class='fa-solid fa-ice-cream'></i> Десерты" data-en="<i class='fa-solid fa-ice-cream'></i> Desserts"><i class="fa-solid fa-ice-cream"></i> Десерты</button>
+</div>
+
+<!-- АКЦИИ -->
+<div id="promo" class="section active">
+<div class="card">
+<div class="badge promo" data-ru="2 = 1" data-en="2 = 1">2 = 1</div>
+<video src="drink.mp4" autoplay loop muted playsinline></video>
+<div class="info">
+<h2 data-ru="Счастливые часы" data-en="Happy Hours">Счастливые часы</h2>
+<p class="desc" data-ru="Закажи два Апероль Шприца и получи третий в подарок. Каждый день с 18:00 до 20:00." data-en="Order two Aperol Spritz and get the third one for free. Every day from 18:00 to 20:00.">Закажи два Апероль Шприца и получи третий в подарок. Каждый день с 18:00 до 20:00.</p>
+<div class="price-row">
+<span class="old-price">780 ₽</span>
+<div class="price">390 ₽</div>
+</div>
+</div>
+</div>
 </div>
 
 <!-- САЛАТЫ -->
-<div id="salads" class="section active">
+<div id="salads" class="section">
 <div class="card">
 <video src="greek.mp4" autoplay loop muted playsinline></video>
 <div class="info">
@@ -245,6 +293,7 @@ margin-top: 16px;
 <video src="steak.mp4" autoplay loop muted playsinline></video>
 <div class="info">
 <h2 data-ru="Стейк Рибай" data-en="Ribeye Steak">Стейк Рибай</h2>
+<div class="stars">★★★★★</div>
 <p class="desc" data-ru="Сочный стейк с овощами гриль и ароматным дымком" data-en="Juicy steak with grilled vegetables and a smoky aroma">Сочный стейк с овощами гриль и ароматным дымком</p>
 <p class="kbju" data-ru="650 ккал · Б 45 · Ж 48 · У 12" data-en="650 kcal · P 45 · F 48 · C 12">650 ккал · Б 45 · Ж 48 · У 12</p>
 <div class="price">1290 ₽</div>
@@ -281,14 +330,14 @@ margin-top: 16px;
 <video src="cheesecake.mp4" autoplay loop muted playsinline></video>
 <div class="info">
 <h2 data-ru="Чизкейк с ягодами" data-en="Berry Cheesecake">Чизкейк с ягодами</h2>
+<div class="stars">★★★★★</div>
 <p class="desc" data-ru="Нежный чизкейк с малиной, голубикой и шоколадным соусом" data-en="Delicate cheesecake with raspberries, blueberries and chocolate sauce">Нежный чизкейк с малиной, голубикой и шоколадным соусом</p>
 <p class="kbju" data-ru="420 ккал · Б 7 · Ж 28 · У 35" data-en="420 kcal · P 7 · F 28 · C 35">420 ккал · Б 7 · Ж 28 · У 35</p>
 <div class="price">450 ₽</div>
 </div>
 </div>
 <div class="card">
-<video src="fondant.
-mp4" autoplay loop muted playsinline></video>
+<video src="fondant.mp4" autoplay loop muted playsinline></video>
 <div class="info">
 <h2 data-ru="Шоколадный фондан" data-en="Chocolate Fondant">Шоколадный фондан</h2>
 <p class="desc" data-ru="Горячий фондан с жидким центром и ванильным мороженым" data-en="Hot fondant with a molten center and vanilla ice cream">Горячий фондан с жидким центром и ванильным мороженым</p>
@@ -298,9 +347,10 @@ mp4" autoplay loop muted playsinline></video>
 </div>
 </div>
 
-<!-- НИЖНЯЯ ПАНЕЛЬ С КОНТАКТАМИ -->
+<!-- НИЖНЯЯ ПАНЕЛЬ -->
 <div class="bottom-bar">
-<button onclick="toggleContacts()" class="btn-call" id="btnCall" data-ru="Контакты ресторана" data-en="Restaurant Contacts">Контакты ресторана</button>
+<button onclick="toggleContacts()" class="btn" data-ru="<i class='fa-solid fa-phone'></i> Контакты" data-en="<i class='fa-solid fa-phone'></i> Contacts"><i class="fa-solid fa-phone"></i> Контакты</button>
+<button onclick="shareMenu()" class="btn" data-ru="<i class='fa-solid fa-share-nodes'></i> Поделиться" data-en="<i class='fa-solid fa-share-nodes'></i> Share"><i class="fa-solid fa-share-nodes"></i> Поделиться</button>
 </div>
 
 <!-- ВСПЛЫВАЮЩЕЕ ОКНО -->
@@ -309,7 +359,7 @@ mp4" autoplay loop muted playsinline></video>
 <button onclick="toggleContacts()" class="modal-close">✕</button>
 <h3 style="margin-bottom: 16px; font-size: 20px;">Paradox</h3>
 <p style="color: #aaa; margin-bottom: 16px; font-size: 14px;" data-ru="Мурино, ул. Примерная, д. 1<br>Ежедневно с 12:00 до 23:00" data-en="Murino, Example st., 1<br>Daily from 12:00 to 23:00">Мурино, ул. Примерная, д. 1<br>Ежедневно с 12:00 до 23:00</p>
-<a href="tel:+79990000000" class="modal-btn" data-ru="Позвонить: +7 999 000-00-00" data-en="Call: +7 999 000-00-00">Позвонить: +7 999 000-00-00</a>
+<a href="tel:+79990000000" class="modal-btn" data-ru="<i class='fa-solid fa-phone'></i> Позвонить: +7 999 000-00-00" data-en="<i class='fa-solid fa-phone'></i> Call: +7 999 000-00-00"><i class="fa-solid fa-phone"></i> Позвонить: +7 999 000-00-00</a>
 </div>
 </div>
 
@@ -321,16 +371,24 @@ document.getElementById(id).classList.add('active');
 btn.classList.add('active');
 }
 
+// Обратите внимание: для иконок мы используем innerHTML, так как там теги <i>
 function setLang(lang, btn) {
 document.querySelectorAll('.lang-switch button').forEach(b => b.classList.remove('active'));
 btn.classList.add('active');
+
 document.querySelectorAll('[data-ru]').forEach(el => {
 if (el.hasAttribute('data-' + lang)) {
 if (el.tagName === 'P' && el.classList.contains('modal-content')) return;
+
+// Если это кнопка с иконкой, вставляем HTML
+if (el.tagName === 'BUTTON' || el.tagName === 'A') {
+el.innerHTML = el.getAttribute('data-' + lang);
+} else {
 el.textContent = el.getAttribute('data-' + lang);
 }
+}
 });
-// Отдельно для адреса с переносом строки
+
 const addressP = document.querySelector('.modal-content p');
 if(addressP) {
 addressP.innerHTML = addressP.getAttribute('data-' + lang);
@@ -344,6 +402,17 @@ if (modal.style.display === 'flex') {
 modal.style.display = 'none';
 } else {
 modal.style.display = 'flex';
+}
+}
+
+function shareMenu() {
+if (navigator.share) {
+navigator.share({
+title: ' иParadox | Живое меню',
+url: window.location.href
+}).catch(console.error);
+} else {
+alert('Скопируйте ссылку: ' + window.location.href);
 }
 }
 </script>
