@@ -8,7 +8,6 @@ permissions:
 jobs:
   remind:
     runs-on: ubuntu-latest
-    if: ${{ secrets.RHYTHM_FIREBASE_SERVICE_ACCOUNT != '' && secrets.RHYTHM_VAPID_PRIVATE_KEY != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
