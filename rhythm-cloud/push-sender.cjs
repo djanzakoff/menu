@@ -5,7 +5,7 @@ const creds=JSON.parse(process.env.RHYTHM_FIREBASE_SERVICE_ACCOUNT||'null');
 const privateKey=process.env.RHYTHM_VAPID_PRIVATE_KEY;
 if(!creds||!privateKey){console.log('Push not configured');process.exit(0)}
 admin.initializeApp({credential:admin.credential.cert(creds)});
-webpush.setVapidDetails('mailto:notifications@example.org','BEVmPAsXELOt6YOzVx6ETVmwFn_8SCx6w-_c7m1Zq184FR52JL077YDHbDyE5iYn96BWF_60emmEv7sfMFGQs_g',privateKey);
+webpush.setVapidDetails('mailto:notifications@example.org','BP-axTdMe4O2KBvJC120jE1lG2s155qzLIAWipg96CPaFUDiQYKMQGTcY6jzPSi53T3-CyQcpc0f0vgP50pmP_U',privateKey);
 const messages={food:['Питание','Не забудь записать приём пищи'],water:['Вода','Пора попить воды'],walk:['Прогулка','Время выйти на прогулку'],sleep:['Сон','Пора готовиться ко сну'],exercise:['Зарядка','Время немного размяться']};
 (async()=>{
  const now=new Date(),utc=now.getTime();let sent=0;
