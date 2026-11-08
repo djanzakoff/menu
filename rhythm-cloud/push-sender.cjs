@@ -25,7 +25,7 @@ const messages={food:['Питание','Не забудь записать пр�
    if(!slot)continue;
    const tag=day+':'+key+':'+slot;
    if(push.sent?.[key]===tag)continue;
-   try{await webpush.sendNotification(push.subscription,JSON.stringify({title:'Мой ритм · '+msg[0],body:msg[1],tag}));await ref.update({'payload.rhythmPush.sent.'+key:tag});sent++}
+   try{await webpush.sendNotification(push.subscription,JSON.stringify({title:'Мой ритм · '+msg[0],body:msg[1],tag}));await ref.update({['payload.rhythmPush.sent.'+key]:tag});sent++}
    catch(e){console.error('Push delivery failed',e.statusCode||e.code||'unknown')}
   }
  }
