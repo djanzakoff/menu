@@ -25,6 +25,7 @@ export function createDiaryCloud(firebaseConfig, onState = () => {}) {
     finishRedirect: async () => { await persistenceReady; return getRedirectResult(auth); },
     signOut: () => signOut(auth),
     load: async () => { const snapshot = await getDoc(ref()); return snapshot.exists() ? snapshot.data().payload : null; },
+    savePush: async (subscription,settings) => { if(!user) throw Error('Войдите в Google'); await setDoc(doc(db,'users',user.uid,'private','push'),{subscription,settings,updatedAt:serverTimestamp()}); },
     save: async payload => {
       if (!payload || typeof payload !== 'object') throw Error('Некорректные данные');
       await setDoc(ref(), { payload, updatedAt: serverTimestamp() });
