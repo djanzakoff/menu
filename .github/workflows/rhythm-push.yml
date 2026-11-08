@@ -1,0 +1,21 @@
+name: My Rhythm free push reminders
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    if: ${{ secrets.RHYTHM_FIREBASE_SERVICE_ACCOUNT != '' && secrets.RHYTHM_VAPID_PRIVATE_KEY != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-save --no-package-lock firebase-admin@13 web-push@3
+      - run: node rhythm-cloud/push-sender.cjs
+        env:
+          RHYTHM_FIREBASE_SERVICE_ACCOUNT: ${{ secrets.RHYTHM_FIREBASE_SERVICE_ACCOUNT }}
+          RHYTHM_VAPID_PRIVATE_KEY: ${{ secrets.RHYTHM_VAPID_PRIVATE_KEY }}
