@@ -1,4 +1,4 @@
-const CACHE='my-rhythm-v9';
+const CACHE='my-rhythm-v10';
 const CORE=['./','./index.html','./manifest.webmanifest','./photo-icon.jpg','./firebase-sync.js','./firebase-config.json'];
 self.addEventListener('install',event=>{
   event.waitUntil(caches.open(CACHE).then(cache=>Promise.allSettled(CORE.map(url=>cache.add(url)))).then(()=>self.skipWaiting()));
@@ -24,3 +24,5 @@ self.addEventListener('fetch',event=>{
     }
   })());
 });
+self.addEventListener('push',event=>{let payload={title:'Мой ритм',body:'Время заглянуть в дневник'};try{if(event.data)payload={...payload,...event.data.json()}}catch{}event.waitUntil(self.registration.showNotification(payload.title,{body:payload.body,icon:'./photo-icon.jpg',badge:'./photo-icon.jpg',tag:payload.tag||'rhythm-reminder',data:{url:'./'}}))});
+self.addEventListener('notificationclick',event=>{event.notification.close();event.waitUntil(clients.matchAll({type:'window',includeUncontrolled:true}).then(windows=>{const existing=windows.find(w=>w.url.includes('/rhythm-cloud/'));if(existing)return existing.focus();return clients.openWindow('./')}))});
